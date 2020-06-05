@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 class RetrofitInstance {
 
@@ -13,13 +14,12 @@ class RetrofitInstance {
         private val logger = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         private val okHttp = OkHttpClient.Builder().addInterceptor(logger)
 
-        private val retrofit: Retrofit = Retrofit.Builder()
+        val api = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttp.build())
             .build()
+            .create(GetPost::class.java)
 
-        val getPostApiService: GetPost =
-            retrofit.create(GetPost::class.java)
     }
 }

@@ -7,6 +7,9 @@ import com.example.myjsonplaceholderapi.apiservice.GetPost
 import com.example.myjsonplaceholderapi.apiservice.RetrofitInstance
 import com.example.myjsonplaceholderapi.model.Post
 import com.example.myjsonplaceholderapi.model.PostItem
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,13 +24,27 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private val getPostItemService: GetPost by lazy {
+/*    private val getPostItemService: GetPost by lazy {
         RetrofitInstance.getPostApiService
-    }
+    }*/
+
+
 
 
     private fun getDataFromWebService() {
-        val call: Call<Post> = getPostItemService.getPostItem()
+
+       // val call: Response<Post> = getPostItemService.getPostItem()
+
+        GlobalScope.launch(Dispatchers.IO) {
+            val postList = RetrofitInstance.api.getPostItem()
+            for (items in postList.body()!!){
+
+            }
+
+
+
+        }
+
 
         call.enqueue(object : Callback<Post> {
             override fun onResponse(call: Call<Post>, response: Response<Post>) {
